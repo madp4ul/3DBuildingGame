@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DBlockSpiel", "3DBlockSpiel\3DBlockSpiel.csproj", "{F727F000-98EB-4051-BEDE-16B335A33078}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F727F000-98EB-4051-BEDE-16B335A33078}.Debug|x86.ActiveCfg = Debug|x86
+		{F727F000-98EB-4051-BEDE-16B335A33078}.Debug|x86.Build.0 = Debug|x86
+		{F727F000-98EB-4051-BEDE-16B335A33078}.Release|x86.ActiveCfg = Release|x86
+		{F727F000-98EB-4051-BEDE-16B335A33078}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94A075AE-0646-4DEB-A92F-D603ED4157A0}
+	EndGlobalSection
+EndGlobal
