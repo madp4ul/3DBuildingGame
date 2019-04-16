@@ -1,8 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
-namespace _3DBlockSpiel
+namespace _1st3DGame
 {
     /// <summary>
     /// This is the main type for your game.
@@ -11,11 +17,18 @@ namespace _3DBlockSpiel
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont Font;
+        Effect effect;
+
+        DataContainer data;
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            this.TargetElapsedTime = TimeSpan.FromMilliseconds(16);
         }
 
         /// <summary>
@@ -26,6 +39,10 @@ namespace _3DBlockSpiel
         /// </summary>
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -39,7 +56,18 @@ namespace _3DBlockSpiel
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Font = Content.Load<SpriteFont>("SpriteFont1");
+            effect = Content.Load<Effect>("Effect1");
 
+            Block.BlockTex = Content.Load<Texture2D>("Blocks");
+
+
+            Mouse.SetPosition(
+                GraphicsDevice.Viewport.Width / 2,
+                GraphicsDevice.Viewport.Width / 2);
+            //Window.ClientBounds.X + (int)(Window.ClientBounds.Width / 2f),
+            //Window.ClientBounds.Y + (int)(Window.ClientBounds.Height / 2f));
+            data = new DataContainer(spriteBatch, Font);
             // TODO: use this.Content to load your game content here
         }
 
@@ -59,8 +87,13 @@ namespace _3DBlockSpiel
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            KeyboardState ks = Keyboard.GetState();
+            MouseState ms = Mouse.GetState();
+            // Allows the game to exit
+            if (ks.IsKeyDown(Keys.Escape))
+                this.Exit();
+
+            data.Update(ks, ms, gameTime);
 
             // TODO: Add your update logic here
 
@@ -73,10 +106,15 @@ namespace _3DBlockSpiel
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DeepSkyBlue, 1.0f, 0);
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.CullClockwiseFace;
+            rs.FillMode = FillMode.Solid;
+            graphics.GraphicsDevice.RasterizerState = rs;
 
+            data.Draw(effect, spriteBatch, Font);
             // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }
