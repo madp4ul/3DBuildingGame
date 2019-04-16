@@ -43,43 +43,106 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="Blocks.cs" />
+    <Compile Include="Body.cs" />
     <Compile Include="Chunk.cs" />
+    <Compile Include="CollStruct.cs" />
     <Compile Include="DataContainer.cs" />
-    <Compile Include="DynamicHUD.cs" />
+    <Compile Include="DisplayMode.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyTypes.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="InputChecker.cs" />
+    <Compile Include="Hud_Elements\CrossHair.cs" />
+    <Compile Include="Hud_Elements\ItemBar.cs" />
+    <Compile Include="IngameDateTime.cs" />
+    <Compile Include="Input\InputProcessor.cs" />
+    <Compile Include="Input\InventoryDragAndDrop.cs" />
+    <Compile Include="Input\Keybindings.cs" />
     <Compile Include="Inventory.cs" />
-    <Compile Include="MovebleCam.cs" />
+    <Compile Include="IO\IODataContainer.cs" />
+    <Compile Include="Living.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Menus\GraphicsMenu.cs" />
+    <Compile Include="Menus\GraphicsMenuOptions\GraphicsOptions.cs" />
+    <Compile Include="Menus\GraphicsMenuOptions\ViewDistances.cs" />
+    <Compile Include="Menus\InventoryMenu.cs" />
+    <Compile Include="Menus\InventoryStates\InventoryShowStates.cs" />
+    <Compile Include="Menus\OptionMenu.cs" />
+    <Compile Include="Menus\PauseMenu.cs" />
+    <Compile Include="Model\ChunkData\AChunkData.cs" />
+    <Compile Include="Model\ChunkData\ChunkDataArray1.cs" />
+    <Compile Include="Model\ChunkData\ChunkDataArray3.cs" />
+    <Compile Include="Model\Point3D.cs" />
+    <Compile Include="Model\RandomGeneration\ARandomGeneration.cs" />
+    <Compile Include="Model\RandomGeneration\IRandomGenerierung.cs" />
+    <Compile Include="Model\RandomGeneration\PerlinNoise.cs" />
     <Compile Include="MovebleCamera.cs" />
     <Compile Include="MoveDirection.cs" />
+    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Point3D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGeneration.cs" />
     <Compile Include="RandomHelper.cs" />
     <Compile Include="RectangleFloats.cs" />
+    <Compile Include="Sky.cs" />
     <Compile Include="StaticHUD.cs" />
+    <Compile Include="Sun.cs" />
+    <Compile Include="VertexChunkposBlocksideTexture.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blocks.png" />
-    <Content Include="Content\Effect1.fx" />
+    <Content Include="Content\Shader\BlockShader.fx" />
+    <Content Include="Content\Shader\CharacterShader.fx" />
+    <Content Include="Content\Shader\OldEffect.fx" />
+    <Content Include="Content\Shader\PointSpriteShader.fx" />
+    <Content Include="Content\Textures\Enemies\enemyTextures.png" />
+    <Content Include="Content\Textures\Environment\blockNormals.png" />
+    <Content Include="Content\Textures\Environment\blockTextures.png" />
+    <Content Include="Content\Textures\Environment\bremer.jpg" />
+    <Content Include="Content\Textures\Environment\bumpTest.png" />
+    <Content Include="Content\Textures\Environment\bumpTestNormals.png" />
+    <Content Include="Content\Textures\Environment\HRBlocks2k.png" />
+    <Content Include="Content\Textures\Environment\HRBlocks2kNM%281%29.png" />
+    <Content Include="Content\Textures\Environment\HRBlocks2kNM.png" />
+    <Content Include="Content\Textures\Environment\shaderColorTest.bmp" />
+    <Content Include="Content\Textures\HUD\blockIcons.png" />
+    <Content Include="Content\Textures\Menus\ButtonBackground.png" />
+    <Content Include="Content\Textures\Suns\sunTexture.png" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="Icon.ico" />
+    <Content Include="obj\x86\Debug\3DBlockSpiel.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\x86\Debug\3DBlockSpiel.exe" />
+    <Content Include="obj\x86\Debug\3DBlockSpiel.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="Content\SpriteFont1.spritefont" />
+    <None Include="Content\Fonts\menuFont.spritefont" />
+    <None Include="Content\Fonts\SpriteFont1.spritefont" />
+    <None Include="obj\x86\Debug\3DBlockSpiel.csproj.CopyComplete" />
+    <None Include="obj\x86\Debug\3DBlockSpiel.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\x86\Debug\3DBlockSpiel.csprojAssemblyReference.cache" />
+    <None Include="obj\x86\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Windows\Content\" />
+    <Folder Include="obj\Windows\SpriteFont1\Content\" />
+    <Folder Include="obj\x86\Debug\TempPE\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

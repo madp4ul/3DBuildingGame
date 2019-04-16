@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -7,28 +7,45 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using _1st3DGame.Input;
+using _1st3DGame.IO;
+using _1st3DGame.Menus.GraphicsMenuOptions;
 
 namespace _1st3DGame
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// This is the main type for your game
     /// </summary>
     public class Game1 : Game
     {
+        static string SavePath = "config.cfg";
+        public static IODataContainer IODataContainer;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpriteFont Font;
         Effect effect;
+        
+        public static Texture2D EmptyTexture;
+        public static bool ExitGame = false;
 
-        DataContainer data;
-
+        internal DataContainer GameData { get; private set; }
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+
             Content.RootDirectory = "Content";
 
-            this.TargetElapsedTime = TimeSpan.FromMilliseconds(16);
+            this.IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
+
+            this.Exiting += new EventHandler<EventArgs>(Game1_Exiting);
+        }
+
+        void Game1_Exiting(object sender, EventArgs e)
+        {
+            IODataContainer.Save(SavePath);
         }
 
         /// <summary>
@@ -39,12 +56,7 @@ namespace _1st3DGame
         /// </summary>
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
-            graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            graphics.IsFullScreen = false;
-            graphics.ApplyChanges();
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -54,26 +66,65 @@ namespace _1st3DGame
         /// </summary>
         protected override void LoadContent()
         {
+            IODataContainer = IODataContainer.Load(SavePath);
+            SetGraphics(IODataContainer.GraphicsOptions);
+
+            EmptyTexture = new Texture2D(GraphicsDevice, 1, 1);
+            EmptyTexture.SetData<Color>(new Color[1] { Color.White });
+            StaticHUD.EmptyTex = EmptyTexture;
+            Menus.InventoryMenu.InventoryBackgroundTexture = EmptyTexture;
+            Menus.PauseMenu.BackgroundTexture = EmptyTexture;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Font = Content.Load<SpriteFont>("SpriteFont1");
-            effect = Content.Load<Effect>("Effect1");
+            DataContainer.IngameFont = Content.Load<SpriteFont>("Fonts/SpriteFont1");
+            DataContainer.MenuFont = Content.Load<SpriteFont>("Fonts/menuFont");
 
-            Block.BlockTex = Content.Load<Texture2D>("Blocks");
+            effect = Content.Load<Effect>("Shader/OldEffect");
 
+            World.BlockEffect = Content.Load<Effect>("Shader/BlockShader");
+            World.PointSpriteEffect = Content.Load<Effect>("Shader/PointSpriteShader");
+            World.CharacterEffect = Content.Load<Effect>("Shader/CharacterShader");
+            World.SunsTexture = Content.Load<Texture2D>("Textures/Suns/sunTexture");
 
-            Mouse.SetPosition(
-                GraphicsDevice.Viewport.Width / 2,
-                GraphicsDevice.Viewport.Width / 2);
-            //Window.ClientBounds.X + (int)(Window.ClientBounds.Width / 2f),
-            //Window.ClientBounds.Y + (int)(Window.ClientBounds.Height / 2f));
-            data = new DataContainer(spriteBatch, Font);
+            Enemy.EnemyTex = Content.Load<Texture2D>("Textures/Enemies/enemyTextures");
+
+            Block.IconTex = Content.Load<Texture2D>("Textures/HUD/blockIcons");
+            Block.BlockTex = Content.Load<Texture2D>("Textures/Environment/HRBlocks2k");
+            Block.BlockBumpMap = Content.Load<Texture2D>("Textures/Environment/HRBlocks2kNM");
+            //Block.BlockTex = Content.Load<Texture2D>("Textures/Environment/shaderColorTest");
+            //Block.BlockBumpMap = Content.Load<Texture2D>("Textures/Environment/shaderColorTest");
+            Menus.PauseMenu.ButtonBackgroundTextures = Content.Load<Texture2D>("Textures/Menus/ButtonBackground");
+          
+            GameData = new DataContainer(spriteBatch, graphics);
+
+            LoadInputProcessor(IODataContainer);
             // TODO: use this.Content to load your game content here
+            
+            //Auskommentieren, falls mehr Daten gespeichert werden sollen
+            //IODataContainer.Save(SavePath);
+
+        }
+
+        private void SetGraphics(GraphicsOptions go)
+        {
+            graphics.PreferredBackBufferWidth = go.Resolution.X;
+            graphics.PreferredBackBufferHeight = go.Resolution.Y;
+            graphics.IsFullScreen = go.Fullscreen;
+            graphics.ApplyChanges();
+        }
+
+        public void LoadInputProcessor(IODataContainer iodc)
+        {
+            KeyboardState ks = Keyboard.GetState();
+            MouseState ms = Mouse.GetState();
+            InputProcessor.SetData(this, ks, ms, new Point(GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight), iodc.Keybindings);
         }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
+        /// all content.
         /// </summary>
         protected override void UnloadContent()
         {
@@ -90,16 +141,23 @@ namespace _1st3DGame
             KeyboardState ks = Keyboard.GetState();
             MouseState ms = Mouse.GetState();
             // Allows the game to exit
-            if (ks.IsKeyDown(Keys.Escape))
+            if (ExitGame)
                 this.Exit();
 
-            data.Update(ks, ms, gameTime);
+            this.IsMouseVisible = GameData.MouseVisible[GameData.GameDislayMode];
+            // if (this.IsActive)
+            GameData.Update(ks, ms, gameTime);
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
 
+        static RasterizerState rs = new RasterizerState()
+        {
+            CullMode = CullMode.CullClockwiseFace,
+            FillMode = FillMode.Solid
+        };
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -108,14 +166,24 @@ namespace _1st3DGame
         {
             graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.DeepSkyBlue, 1.0f, 0);
             graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            RasterizerState rs = new RasterizerState();
-            rs.CullMode = CullMode.CullClockwiseFace;
-            rs.FillMode = FillMode.Solid;
+            
+
             graphics.GraphicsDevice.RasterizerState = rs;
 
-            data.Draw(effect, spriteBatch, Font);
+            GameData.Draw(spriteBatch);
             // TODO: Add your drawing code here
             base.Draw(gameTime);
+        }
+
+        public void SetGraphics(Point resolution, bool isFullscreen)
+        {
+            IODataContainer.GraphicsOptions.Resolution = resolution;
+            IODataContainer.GraphicsOptions.Fullscreen = isFullscreen;
+
+            graphics.PreferredBackBufferWidth = resolution.X;
+            graphics.PreferredBackBufferHeight = resolution.Y;
+            graphics.IsFullScreen = isFullscreen;
+            graphics.ApplyChanges();
         }
     }
 }
