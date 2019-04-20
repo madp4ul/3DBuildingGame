@@ -118,15 +118,16 @@ namespace _1st3DGame
 
         private void InitViewDistances()
         {
-            this.Bufferranges = new Dictionary<ViewDistances, float>();
-            this.Bufferranges.Add(ViewDistances.Minimum, 3);
-            this.Bufferranges.Add(ViewDistances.Low, 4);
-            this.Bufferranges.Add(ViewDistances.Normal, 5);
-            this.Bufferranges.Add(ViewDistances.High, 6);
-            this.Bufferranges.Add(ViewDistances.VeryHigh, 7);
-            this.Bufferranges.Add(ViewDistances.Extreme, 9);
-            this.Bufferranges.Add(ViewDistances.Maximum, 10);
-
+            this.Bufferranges = new Dictionary<ViewDistances, float>
+            {
+                { ViewDistances.Minimum, 3 },
+                { ViewDistances.Low, 4 },
+                { ViewDistances.Normal, 5 },
+                { ViewDistances.High, 6 },
+                { ViewDistances.VeryHigh, 7 },
+                { ViewDistances.Extreme, 9 },
+                { ViewDistances.Maximum, 10 }
+            };
         }
 
         private Vector3 GetStartPos()
@@ -889,8 +890,7 @@ namespace _1st3DGame
                         {
                             if (kv.Value < distancePlayerEnemy)
                             {
-                                Vector3? intersectionPoint = null;
-                                Point3D index = kv.Key.GetFirstIntersectedBlockIndex(playerToEnemy, distancePlayerEnemy, true, out intersectionPoint);
+                                Point3D index = kv.Key.GetFirstIntersectedBlockIndex(playerToEnemy, distancePlayerEnemy, true, out Vector3? intersectionPoint);
                                 if (index != null)
                                 {
                                     hiddenBehindBlock = true;
@@ -964,11 +964,10 @@ namespace _1st3DGame
             {
                 Ray backRay = new Ray((Vector3)intersection, -playerRay.Direction);
                 Dictionary<Chunk, float> inChunks2 = IntersectingChunks(backRay);
-                Vector3? airIntersectionPoint;
                 for (int i = 0; i < inChunks2.Count; i++)
                 {
                     Point3D positionToBuild = inChunks2.ElementAt(i).Key.GetFirstIntersectedBlockIndex(
-                        backRay, Block.Radius * 2, false, out airIntersectionPoint);
+                        backRay, Block.Radius * 2, false, out Vector3? airIntersectionPoint);
 
                     if (positionToBuild != null)
                     {
@@ -1141,7 +1140,7 @@ namespace _1st3DGame
                 body.Draw(effect, viewProjectionMatrix);
         }
 
-        private static VertexPositionColor[] OrientationLines = new VertexPositionColor[]{
+        private static readonly VertexPositionColor[] OrientationLines = new VertexPositionColor[]{
                 new VertexPositionColor(Vector3.Zero,Color.Red),
                 new VertexPositionColor(Vector3.Right,Color.Red),
                 new VertexPositionColor(Vector3.Zero,Color.Green),
@@ -1149,7 +1148,7 @@ namespace _1st3DGame
                 new VertexPositionColor(Vector3.Zero,Color.Blue),
                 new VertexPositionColor(Vector3.Forward,Color.Blue)
             };
-        static RasterizerState noCulling = new RasterizerState()
+        static readonly RasterizerState noCulling = new RasterizerState()
         {
             CullMode = CullMode.None
         };

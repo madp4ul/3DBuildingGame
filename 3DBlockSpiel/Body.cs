@@ -804,7 +804,7 @@ namespace _1st3DGame
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Body.VerticesCount, 0, Body.IndicesCount / 3);
+                this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Body.IndicesCount / 3);
             }
         }
         #endregion

@@ -18,7 +18,7 @@ namespace _1st3DGame
     /// </summary>
     public class Game1 : Game
     {
-        static string SavePath = "config.cfg";
+        static readonly string SavePath = "config.cfg";
         public static IODataContainer IODataContainer;
 
         GraphicsDeviceManager graphics;
@@ -32,8 +32,10 @@ namespace _1st3DGame
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            graphics = new GraphicsDeviceManager(this)
+            {
+                GraphicsProfile = GraphicsProfile.HiDef
+            };
 
             Content.RootDirectory = "Content";
 
@@ -153,7 +155,7 @@ namespace _1st3DGame
             base.Update(gameTime);
         }
 
-        static RasterizerState rs = new RasterizerState()
+        static readonly RasterizerState rs = new RasterizerState()
         {
             CullMode = CullMode.CullClockwiseFace,
             FillMode = FillMode.Solid

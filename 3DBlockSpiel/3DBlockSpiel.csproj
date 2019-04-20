@@ -69,18 +69,16 @@
     <Compile Include="Menus\InventoryStates\InventoryShowStates.cs" />
     <Compile Include="Menus\OptionMenu.cs" />
     <Compile Include="Menus\PauseMenu.cs" />
-    <Compile Include="Model\ChunkData\AChunkData.cs" />
-    <Compile Include="Model\ChunkData\ChunkDataArray1.cs" />
-    <Compile Include="Model\ChunkData\ChunkDataArray3.cs" />
+    <Compile Include="Model\BlockStore\BlockStoreArray1.cs" />
+    <Compile Include="Model\BlockStore\BlockStoreArray3.cs" />
+    <Compile Include="Model\BlockStore\IBlockStore.cs" />
+    <Compile Include="Model\BlockStore\SpaceEfficientBlockStore.cs" />
     <Compile Include="Model\Point3D.cs" />
     <Compile Include="Model\RandomGeneration\ARandomGeneration.cs" />
     <Compile Include="Model\RandomGeneration\IRandomGenerierung.cs" />
     <Compile Include="Model\RandomGeneration\PerlinNoise.cs" />
     <Compile Include="MovebleCamera.cs" />
     <Compile Include="MoveDirection.cs" />
-    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\x86\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,26 +122,15 @@
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="Icon.ico" />
-    <Content Include="obj\x86\Debug\3DBlockSpiel.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\x86\Debug\3DBlockSpiel.exe" />
-    <Content Include="obj\x86\Debug\3DBlockSpiel.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="Content\Fonts\menuFont.spritefont" />
     <None Include="Content\Fonts\SpriteFont1.spritefont" />
-    <None Include="obj\x86\Debug\3DBlockSpiel.csproj.CopyComplete" />
-    <None Include="obj\x86\Debug\3DBlockSpiel.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\x86\Debug\3DBlockSpiel.csprojAssemblyReference.cache" />
-    <None Include="obj\x86\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\Windows\Content\" />
-    <Folder Include="obj\Windows\SpriteFont1\Content\" />
-    <Folder Include="obj\x86\Debug\TempPE\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

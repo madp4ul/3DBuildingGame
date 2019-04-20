@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using BlockGameClasses;
 using BlockGameClasses.ChunkData;
 using BlockGameClasses.RandomGeneration;
+using _1st3DGame.Model.BlockStore;
 
 namespace _1st3DGame
 {
@@ -74,7 +75,7 @@ namespace _1st3DGame
         #endregion
 
         //public Block[, ,] AllBlocks { get; private set; }
-        public AChunkData<Block> AllBlocks { get; private set; }
+        public IBlockStore AllBlocks { get; private set; }
 
         #region Buffer and Surroundings
         VertexBuffer VBufferLeft;
@@ -107,7 +108,8 @@ namespace _1st3DGame
 
         public bool BufferSet { get; private set; }
         public bool SettingBuffer { get; private set; }
-        GraphicsDevice Device;
+
+        readonly GraphicsDevice Device;
 
         public Chunk ChunkAbove = null;
         public Chunk ChunkBelow = null;
@@ -128,7 +130,7 @@ namespace _1st3DGame
             //x=width,y=length,z=height
 
             //this.AllBlocks = new Block[ChunkWidth, ChunkWidth, ChunkWidth];
-            this.AllBlocks = new ChunkDataArray1<Block>(ChunkWidth, ChunkWidth, ChunkWidth);
+            this.AllBlocks = new SpaceEfficientBlockStore(ChunkWidth, ChunkWidth, ChunkWidth);
 
             this.BBox = new BoundingBox(MinCorner, MinCorner + Size);
             this.Device = device;
@@ -311,17 +313,15 @@ namespace _1st3DGame
 
         private void SetHidden(int x, int y, int z)
         {
-            if (
+            bool notHidden =
                 !HoldsVisibleBlock(x - 1, y, z) ||
                 !HoldsVisibleBlock(x + 1, y, z) ||
                 !HoldsVisibleBlock(x, y - 1, z) ||
                 !HoldsVisibleBlock(x, y + 1, z) ||
                 !HoldsVisibleBlock(x, y, z - 1) ||
-                !HoldsVisibleBlock(x, y, z + 1)
-                )
-                this.AllBlocks[x, y, z].NotHidden = true;
-            else
-                this.AllBlocks[x, y, z].NotHidden = false;
+                !HoldsVisibleBlock(x, y, z + 1);
+
+            this.AllBlocks[x, y, z] = new Block(this.AllBlocks[x, y, z].Type) { NotHidden = notHidden };
         }
 
         /// <summary>
@@ -511,9 +511,8 @@ namespace _1st3DGame
                 if (startIndex.Z >= ChunkWidth)
                     startIndex.Z--;
 
-                float? distance;
                 Point3D blockPos = IntersectedCollidingBlockIndexRecursion(
-                    ray, startIndex, maxDistance, lookForCollidingBlock, out distance);
+                    ray, startIndex, maxDistance, lookForCollidingBlock, out float? distance);
 
                 if (distance.HasValue)
                 {
@@ -762,26 +761,14 @@ namespace _1st3DGame
 
         public void SetBuffers()
         {
-            List<VertexPositionIndexedNormalTexture> verticesLeft;
-            List<int> indicesLeft;
-            List<VertexPositionIndexedNormalTexture> verticesRight;
-            List<int> indicesRight;
-            List<VertexPositionIndexedNormalTexture> verticesAbove;
-            List<int> indicesAbove;
-            List<VertexPositionIndexedNormalTexture> verticesBelow;
-            List<int> indicesBelow;
-            List<VertexPositionIndexedNormalTexture> verticesInfront;
-            List<int> indicesInfront;
-            List<VertexPositionIndexedNormalTexture> verticesBehind;
-            List<int> indicesBehind;
 
             SetVerticesIndices(
-                out verticesLeft, out indicesLeft,
-                out verticesRight, out indicesRight,
-                out verticesAbove, out indicesAbove,
-                out verticesBelow, out indicesBelow,
-                out verticesInfront, out indicesInfront,
-                out verticesBehind, out indicesBehind);
+                out List<VertexPositionIndexedNormalTexture> verticesLeft, out List<int> indicesLeft,
+                out List<VertexPositionIndexedNormalTexture> verticesRight, out List<int> indicesRight,
+                out List<VertexPositionIndexedNormalTexture> verticesAbove, out List<int> indicesAbove,
+                out List<VertexPositionIndexedNormalTexture> verticesBelow, out List<int> indicesBelow,
+                out List<VertexPositionIndexedNormalTexture> verticesInfront, out List<int> indicesInfront,
+                out List<VertexPositionIndexedNormalTexture> verticesBehind, out List<int> indicesBehind);
 
             // DISPOSE BUFFERS?
             // TODO
@@ -846,7 +833,7 @@ namespace _1st3DGame
         public void DeleteBuffer()
         {
             DisposeBuffers();
-            
+
             this.VBufferLeft = null;
             this.IBufferLeft = null;
             this.VBufferRight = null;
@@ -967,11 +954,9 @@ namespace _1st3DGame
         /// <returns>drawn vertices</returns>
         public int DrawBlocks(Point3D cameraGridPos, Effect effect, Matrix viewProjectionMatrix)
         {
-            bool drawLeft, drawRight, drawAbove,
-                drawBelow, drawInfront, drawBehind;
             FindSitesToDraw(cameraGridPos,
-                out drawLeft, out drawRight, out drawAbove,
-                out drawBelow, out drawInfront, out drawBehind);
+                out bool drawLeft, out bool drawRight, out bool drawAbove,
+                out bool drawBelow, out bool drawInfront, out bool drawBehind);
 
             Matrix wvpMatrix = this.WorldMatrix * viewProjectionMatrix;
 
@@ -989,8 +974,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferLeft;
                         this.Device.SetVertexBuffer(this.VBufferLeft);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                            this.VerticesCountLeft, 0, this.IndicesCountLeft / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountLeft / 3);
 
                         drawnVertices += this.VerticesCountLeft;
                     }
@@ -1001,8 +985,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferRight;
                         this.Device.SetVertexBuffer(this.VBufferRight);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                            this.VerticesCountRight, 0, this.IndicesCountRight / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountRight / 3);
 
                         drawnVertices += this.VerticesCountRight;
                     }
@@ -1013,8 +996,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferAbove;
                         this.Device.SetVertexBuffer(this.VBufferAbove);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                            this.VerticesCountAbove, 0, this.IndicesCountAbove / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountAbove / 3);
 
                         drawnVertices += this.VerticesCountAbove;
                     }
@@ -1025,8 +1007,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferBelow;
                         this.Device.SetVertexBuffer(this.VBufferBelow);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                            0, 0, this.VerticesCountBelow, 0, this.IndicesCountBelow / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountBelow / 3);
 
                         drawnVertices += this.VerticesCountBelow;
                     }
@@ -1037,8 +1018,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferInfront;
                         this.Device.SetVertexBuffer(this.VBufferInfront);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                            this.VerticesCountInfront, 0, this.IndicesCountInfront / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountInfront / 3);
 
                         drawnVertices += this.VerticesCountInfront;
                     }
@@ -1049,8 +1029,7 @@ namespace _1st3DGame
 
                         this.Device.Indices = this.IBufferBehind;
                         this.Device.SetVertexBuffer(this.VBufferBehind);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                            0, 0, this.VerticesCountBehind, 0, this.IndicesCountBehind / 3);
+                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountBehind / 3);
                         drawnVertices += this.VerticesCountBehind;
                     }
             }

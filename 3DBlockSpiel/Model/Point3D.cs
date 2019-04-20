@@ -81,6 +81,11 @@ namespace BlockGameClasses
             return new Point3D(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
         }
 
+        public Point3D Clone()
+        {
+            return new Point3D(this);
+        }
+
         public int CompareTo(Point3D p2)
         {
             if (p2 == null)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -132,84 +133,7 @@ namespace _1st3DGame
                 new Vector2(1.0f / TexturesPerBlock - BorderTolerance, TexPosUpper))
             };
         }
-        //public VertexPositionNormalTexture[] VerticesYNegative(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //                    new VertexPositionNormalTexture(minCorner,
-        //        Vector3.Down, new Vector2(2.0f / 3.0f + BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength,
-        //        Vector3.Down, new Vector2(1 - BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Down, new Vector2(1 - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength,
-        //        Vector3.Down, new Vector2(2.0f / 3.0f + BorderTolerance, TexPosUpper))
-        //    };
-        //}
-        //public VertexPositionNormalTexture[] VerticesZNegative(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //    new VertexPositionNormalTexture(minCorner,
-        //        Vector3.Forward, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength,
-        //        Vector3.Forward, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,
-        //        Vector3.Forward, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength,
-        //        Vector3.Forward, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosLower))
-        //    };
-        //}
-        //public VertexPositionNormalTexture[] VerticesXNegative(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //    new VertexPositionNormalTexture(minCorner,
-        //        Vector3.Left, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength,
-        //        Vector3.Left, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Left, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength,
-        //        Vector3.Left, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosUpper))
-        //    };
-        //}
-        //public VertexPositionNormalTexture[] VerticesXPositive(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength,
-        //        Vector3.Right, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength,
-        //        Vector3.Right, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Right, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Right, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosLower))
-        //    };
-        //}
-        //public VertexPositionNormalTexture[] VerticesZPositive(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength,
-        //        Vector3.Backward, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength,
-        //        Vector3.Backward, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength + Vector3.Up * Sidelength,
-        //        Vector3.Backward, new Vector2(2.0f / 3.0f - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Backward * Sidelength + Vector3.Up * Sidelength,
-        //        Vector3.Backward, new Vector2(1.0f / 3.0f + BorderTolerance, TexPosUpper))
-        //    };
-        //}
-        //public VertexPositionNormalTexture[] VerticesYPositive(Vector3 minCorner)
-        //{
-        //    return new VertexPositionNormalTexture[]{
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength,
-        //        Vector3.Up, new Vector2(BorderTolerance, TexPosLower)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Up, new Vector2(BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,
-        //        Vector3.Up, new Vector2(1.0f / 3.0f - BorderTolerance, TexPosUpper)),
-        //    new VertexPositionNormalTexture(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,
-        //        Vector3.Up, new Vector2(1.0f / 3.0f - BorderTolerance, TexPosLower))
-        //    };
-        //}
+
         #endregion
         public int[] Indices(int offSet)
         {
@@ -234,24 +158,6 @@ namespace _1st3DGame
         {
             return new Block(this.Type);
         }
-
-        //public static bool operator ==(Block b1, Block b2)
-        //{
-        //    if (b1.Type == b2.Type)
-        //    {
-        //        return true;
-        //    }
-        //    else return false;
-        //}
-
-        //public static bool operator !=(Block b1, Block b2)
-        //{
-        //    if (b1.Type == b2.Type)
-        //    {
-        //        return false;
-        //    }
-        //    else return true;
-        //}
 
         public override bool Equals(object obj)
         {
