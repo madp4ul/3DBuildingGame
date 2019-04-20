@@ -54,81 +54,81 @@ namespace _1st3DGame
         }
 
         #region ReturnVertices
-        public VertexBlockPositionIndexedNormalTexture[] VerticesYNegative(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesYNegative(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-                new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner,4),
+            return new VertexPositionIndexedNormalTexture[]{
+                new VertexPositionIndexedNormalTexture(new Vector4(minCorner,4),
                     new Vector2(2.0f / TexturesPerBlock + BorderTolerance, TexPosLower)),
-                new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,4),
+                new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,4),
                     new Vector2(3.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-                new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,4),
+                new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,4),
                     new Vector2(3.0f / TexturesPerBlock - BorderTolerance, TexPosUpper)),
-                new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,4),
+                new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,4),
                     new Vector2(2.0f / TexturesPerBlock + BorderTolerance, TexPosUpper))
             };
         }
-        public VertexBlockPositionIndexedNormalTexture[] VerticesZNegative(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesZNegative(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner,5),
+            return new VertexPositionIndexedNormalTexture[]{
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner,5),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,5),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,5),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,5),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,5),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,5),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,5),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosLower))
             };
         }
-        public VertexBlockPositionIndexedNormalTexture[] VerticesXNegative(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesXNegative(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner,3),
+            return new VertexPositionIndexedNormalTexture[]{
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner,3),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,3),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,3),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,3),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,3),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,3),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,3),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosUpper))
             };
         }
-        public VertexBlockPositionIndexedNormalTexture[] VerticesXPositive(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesXPositive(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,0),
+            return new VertexPositionIndexedNormalTexture[]{
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength,0),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength,0),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength,0),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,0),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,0),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,0),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,0),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosLower))
             };
         }
-        public VertexBlockPositionIndexedNormalTexture[] VerticesZPositive(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesZPositive(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,2),
+            return new VertexPositionIndexedNormalTexture[]{
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength,2),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength,2),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength,2),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength + Vector3.Up * Sidelength,2),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Right * Sidelength + Vector3.Up * Sidelength,2),
                 new Vector2(2.0f / TexturesPerBlock - BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Up * Sidelength,2),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Backward * Sidelength + Vector3.Up * Sidelength,2),
                 new Vector2(1.0f / TexturesPerBlock + BorderTolerance, TexPosUpper))
             };
         }
-        public VertexBlockPositionIndexedNormalTexture[] VerticesYPositive(Vector3 minCorner)
+        public VertexPositionIndexedNormalTexture[] VerticesYPositive(Vector3 minCorner)
         {
-            return new VertexBlockPositionIndexedNormalTexture[]{
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,1),
+            return new VertexPositionIndexedNormalTexture[]{
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength,1),
                 new Vector2(BorderTolerance, TexPosUpper)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,1),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Backward * Sidelength,1),
                 new Vector2(BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,1),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength + Vector3.Backward * Sidelength,1),
                 new Vector2(1.0f / TexturesPerBlock - BorderTolerance, TexPosLower)),
-            new VertexBlockPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,1),
+            new VertexPositionIndexedNormalTexture(new Vector4(minCorner + Vector3.Up * Sidelength + Vector3.Right * Sidelength,1),
                 new Vector2(1.0f / TexturesPerBlock - BorderTolerance, TexPosUpper))
             };
         }

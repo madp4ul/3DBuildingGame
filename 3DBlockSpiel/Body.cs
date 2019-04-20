@@ -791,8 +791,8 @@ namespace _1st3DGame
             Body.IndicesCount = indices.Length;
             Body.DefaultThirdPersonVBuffer = new VertexBuffer(device, VertexPositionIndexedNormalTexture.VertexDeclaration, 24, BufferUsage.WriteOnly);
             Body.DefaultThirdPersonIBuffer = new IndexBuffer(device, typeof(int), 36, BufferUsage.WriteOnly);
-            Body.DefaultThirdPersonVBuffer.SetData<VertexPositionIndexedNormalTexture>(identityVertices);
-            Body.DefaultThirdPersonIBuffer.SetData<int>(indices);
+            Body.DefaultThirdPersonVBuffer.SetData(identityVertices);
+            Body.DefaultThirdPersonIBuffer.SetData(indices);
         }
         protected void DrawThirdPersonDefault(Effect effect, Matrix viewProjectionMatrix)
         {

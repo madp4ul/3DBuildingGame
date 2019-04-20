@@ -225,7 +225,7 @@ namespace _1st3DGame
                 for (int y = ChunkWidth - 1; y >= 0; y--)
                     for (int z = 0; z < ChunkWidth; z++)
                     {
-                        Block b =generator.GetBlock(x, y, z);
+                        Block b = generator.GetBlock(x, y, z);
                         if (b.Type != BlockTypes.Air)
                         { }
                         this.AllBlocks[x, y, z] = b;
@@ -762,17 +762,17 @@ namespace _1st3DGame
 
         public void SetBuffers()
         {
-            List<VertexBlockPositionIndexedNormalTexture> verticesLeft;
+            List<VertexPositionIndexedNormalTexture> verticesLeft;
             List<int> indicesLeft;
-            List<VertexBlockPositionIndexedNormalTexture> verticesRight;
+            List<VertexPositionIndexedNormalTexture> verticesRight;
             List<int> indicesRight;
-            List<VertexBlockPositionIndexedNormalTexture> verticesAbove;
+            List<VertexPositionIndexedNormalTexture> verticesAbove;
             List<int> indicesAbove;
-            List<VertexBlockPositionIndexedNormalTexture> verticesBelow;
+            List<VertexPositionIndexedNormalTexture> verticesBelow;
             List<int> indicesBelow;
-            List<VertexBlockPositionIndexedNormalTexture> verticesInfront;
+            List<VertexPositionIndexedNormalTexture> verticesInfront;
             List<int> indicesInfront;
-            List<VertexBlockPositionIndexedNormalTexture> verticesBehind;
+            List<VertexPositionIndexedNormalTexture> verticesBehind;
             List<int> indicesBehind;
 
             SetVerticesIndices(
@@ -794,49 +794,49 @@ namespace _1st3DGame
                 if (verticesLeft.Count != 0)
                 {
                     this.VBufferLeft = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesLeft.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesLeft.Count, BufferUsage.WriteOnly);
                     this.IBufferLeft = new IndexBuffer(this.Device, typeof(int), indicesLeft.Count, BufferUsage.WriteOnly);
-                    this.VBufferLeft.SetData<VertexBlockPositionIndexedNormalTexture>(verticesLeft.ToArray());
+                    this.VBufferLeft.SetData(verticesLeft.ToArray());
                     this.IBufferLeft.SetData<int>(indicesLeft.ToArray());
                 }
                 if (verticesRight.Count != 0)
                 {
                     this.VBufferRight = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesRight.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesRight.Count, BufferUsage.WriteOnly);
                     this.IBufferRight = new IndexBuffer(this.Device, typeof(int), indicesRight.Count, BufferUsage.WriteOnly);
-                    this.VBufferRight.SetData<VertexBlockPositionIndexedNormalTexture>(verticesRight.ToArray());
+                    this.VBufferRight.SetData(verticesRight.ToArray());
                     this.IBufferRight.SetData<int>(indicesRight.ToArray());
                 }
                 if (verticesAbove.Count != 0)
                 {
                     this.VBufferAbove = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesAbove.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesAbove.Count, BufferUsage.WriteOnly);
                     this.IBufferAbove = new IndexBuffer(this.Device, typeof(int), indicesAbove.Count, BufferUsage.WriteOnly);
-                    this.VBufferAbove.SetData<VertexBlockPositionIndexedNormalTexture>(verticesAbove.ToArray());
+                    this.VBufferAbove.SetData(verticesAbove.ToArray());
                     this.IBufferAbove.SetData<int>(indicesAbove.ToArray());
                 }
                 if (verticesBelow.Count != 0)
                 {
                     this.VBufferBelow = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesBelow.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesBelow.Count, BufferUsage.WriteOnly);
                     this.IBufferBelow = new IndexBuffer(this.Device, typeof(int), indicesBelow.Count, BufferUsage.WriteOnly);
-                    this.VBufferBelow.SetData<VertexBlockPositionIndexedNormalTexture>(verticesBelow.ToArray());
+                    this.VBufferBelow.SetData(verticesBelow.ToArray());
                     this.IBufferBelow.SetData<int>(indicesBelow.ToArray());
                 }
                 if (verticesInfront.Count != 0)
                 {
                     this.VBufferInfront = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesInfront.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesInfront.Count, BufferUsage.WriteOnly);
                     this.IBufferInfront = new IndexBuffer(this.Device, typeof(int), indicesInfront.Count, BufferUsage.WriteOnly);
-                    this.VBufferInfront.SetData<VertexBlockPositionIndexedNormalTexture>(verticesInfront.ToArray());
+                    this.VBufferInfront.SetData(verticesInfront.ToArray());
                     this.IBufferInfront.SetData<int>(indicesInfront.ToArray());
                 }
                 if (verticesBehind.Count != 0)
                 {
                     this.VBufferBehind = new VertexBuffer(
-                        this.Device, VertexBlockPositionIndexedNormalTexture.VertexDeclaration, verticesBehind.Count, BufferUsage.WriteOnly);
+                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesBehind.Count, BufferUsage.WriteOnly);
                     this.IBufferBehind = new IndexBuffer(this.Device, typeof(int), indicesBehind.Count, BufferUsage.WriteOnly);
-                    this.VBufferBehind.SetData<VertexBlockPositionIndexedNormalTexture>(verticesBehind.ToArray());
+                    this.VBufferBehind.SetData(verticesBehind.ToArray());
                     this.IBufferBehind.SetData<int>(indicesBehind.ToArray());
                 }
             }
@@ -846,7 +846,7 @@ namespace _1st3DGame
         public void DeleteBuffer()
         {
             DisposeBuffers();
-
+            
             this.VBufferLeft = null;
             this.IBufferLeft = null;
             this.VBufferRight = null;
@@ -864,24 +864,24 @@ namespace _1st3DGame
         }
 
         private void SetVerticesIndices(
-            out List<VertexBlockPositionIndexedNormalTexture> verticesLeft, out List<int> indicesLeft,
-            out List<VertexBlockPositionIndexedNormalTexture> verticesRight, out List<int> indicesRight,
-            out List<VertexBlockPositionIndexedNormalTexture> verticesAbove, out List<int> indicesAbove,
-            out List<VertexBlockPositionIndexedNormalTexture> verticesBelow, out List<int> indicesBelow,
-            out List<VertexBlockPositionIndexedNormalTexture> verticesInfront, out List<int> indicesInfront,
-            out List<VertexBlockPositionIndexedNormalTexture> verticesBehind, out List<int> indicesBehind)
+            out List<VertexPositionIndexedNormalTexture> verticesLeft, out List<int> indicesLeft,
+            out List<VertexPositionIndexedNormalTexture> verticesRight, out List<int> indicesRight,
+            out List<VertexPositionIndexedNormalTexture> verticesAbove, out List<int> indicesAbove,
+            out List<VertexPositionIndexedNormalTexture> verticesBelow, out List<int> indicesBelow,
+            out List<VertexPositionIndexedNormalTexture> verticesInfront, out List<int> indicesInfront,
+            out List<VertexPositionIndexedNormalTexture> verticesBehind, out List<int> indicesBehind)
         {
-            verticesLeft = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesLeft = new List<VertexPositionIndexedNormalTexture>();
             indicesLeft = new List<int>();
-            verticesRight = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesRight = new List<VertexPositionIndexedNormalTexture>();
             indicesRight = new List<int>();
-            verticesAbove = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesAbove = new List<VertexPositionIndexedNormalTexture>();
             indicesAbove = new List<int>();
-            verticesBelow = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesBelow = new List<VertexPositionIndexedNormalTexture>();
             indicesBelow = new List<int>();
-            verticesInfront = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesInfront = new List<VertexPositionIndexedNormalTexture>();
             indicesInfront = new List<int>();
-            verticesBehind = new List<VertexBlockPositionIndexedNormalTexture>();
+            verticesBehind = new List<VertexPositionIndexedNormalTexture>();
             indicesBehind = new List<int>();
 
             for (int x = 0; x < this.AllBlocks.Size.X; x++)

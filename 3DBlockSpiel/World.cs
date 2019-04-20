@@ -99,7 +99,7 @@ namespace _1st3DGame
             BasicEffect = new BasicEffect(this.Device);
             this.Characters = new List<Living>();
             this.Rnd = new Random(StartSeed);
-            
+
             //Random-Dependant init.
             Vector3 startPosition = GetStartPos();
             startPosition.Y = 100;
