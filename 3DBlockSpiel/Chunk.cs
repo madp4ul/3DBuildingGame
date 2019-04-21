@@ -11,11 +11,12 @@ using Microsoft.Xna.Framework.Media;
 using BlockGameClasses;
 using BlockGameClasses.ChunkData;
 using BlockGameClasses.RandomGeneration;
-using _1st3DGame.Model.BlockStore;
+using BlockGame3D.Model.BlockStore;
+using BlockGame3D.Model.VisualBuffer;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
-    class Chunk
+    class Chunk : IDisposable
     {
         public const int ChunkWidth = 32;
 
@@ -78,33 +79,16 @@ namespace _1st3DGame
         public IBlockStore AllBlocks { get; private set; }
 
         #region Buffer and Surroundings
-        VertexBuffer VBufferLeft;
-        IndexBuffer IBufferLeft;
-        VertexBuffer VBufferRight;
-        IndexBuffer IBufferRight;
-        VertexBuffer VBufferAbove;
-        IndexBuffer IBufferAbove;
-        VertexBuffer VBufferBelow;
-        IndexBuffer IBufferBelow;
-        VertexBuffer VBufferInfront;
-        IndexBuffer IBufferInfront;
-        VertexBuffer VBufferBehind;
-        IndexBuffer IBufferBehind;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferLeft;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferRight;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferTop;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferBottom;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferFront;
+        VisualBuffer<VertexPositionIndexedNormalTexture> BufferBack;
+
+
         public int VerticesCount { get; private set; }
         public int IndicesCount { get; private set; }
-
-        private int VerticesCountLeft;
-        private int IndicesCountLeft;
-        private int VerticesCountRight;
-        private int IndicesCountRight;
-        private int VerticesCountAbove;
-        private int IndicesCountAbove;
-        private int VerticesCountBelow;
-        private int IndicesCountBelow;
-        private int VerticesCountInfront;
-        private int IndicesCountInfront;
-        private int VerticesCountBehind;
-        private int IndicesCountBehind;
 
         public bool BufferSet { get; private set; }
         public bool SettingBuffer { get; private set; }
@@ -118,7 +102,6 @@ namespace _1st3DGame
         public Chunk ChunkInfront = null;
         public Chunk ChunkBehind = null;
 
-        private bool ContainVisibleBlocks;
         #endregion
 
         public Chunk(GraphicsDevice device, Point3D gridPosChunk, int seed)
@@ -140,42 +123,18 @@ namespace _1st3DGame
 
         ~Chunk()
         {
-            DisposeBuffers();
+            Dispose();
         }
 
-        private void DisposeBuffers()
+        public void Dispose()
         {
-            if (VBufferAbove != null && !VBufferAbove.IsDisposed)
-                VBufferAbove.Dispose();
-            if (IBufferAbove != null && !IBufferAbove.IsDisposed)
-                IBufferAbove.Dispose();
-
-            if (VBufferBehind != null && !VBufferBehind.IsDisposed)
-                VBufferBehind.Dispose();
-            if (IBufferBehind != null && !IBufferBehind.IsDisposed)
-                IBufferBehind.Dispose();
-
-            if (VBufferBelow != null && !VBufferBelow.IsDisposed)
-                VBufferBelow.Dispose();
-            if (IBufferBelow != null && !IBufferBelow.IsDisposed)
-                IBufferBelow.Dispose();
-
-            if (VBufferInfront != null && !VBufferInfront.IsDisposed)
-                VBufferInfront.Dispose();
-            if (IBufferInfront != null && !IBufferInfront.IsDisposed)
-                IBufferInfront.Dispose();
-
-            if (VBufferLeft != null && !VBufferLeft.IsDisposed)
-                VBufferLeft.Dispose();
-            if (IBufferLeft != null && !IBufferLeft.IsDisposed)
-                IBufferLeft.Dispose();
-
-            if (VBufferRight != null && !VBufferRight.IsDisposed)
-                VBufferRight.Dispose();
-            if (IBufferRight != null && !VBufferRight.IsDisposed)
-                IBufferRight.Dispose();
+            BufferLeft?.Dispose();
+            BufferRight?.Dispose();
+            BufferTop?.Dispose();
+            BufferBottom?.Dispose();
+            BufferFront?.Dispose();
+            BufferBack?.Dispose();
         }
-
 
         #region Biom-Generation
         private void SetGenerationVariables(int seed)
@@ -761,176 +720,86 @@ namespace _1st3DGame
 
         public void SetBuffers()
         {
-
-            SetVerticesIndices(
-                out List<VertexPositionIndexedNormalTexture> verticesLeft, out List<int> indicesLeft,
-                out List<VertexPositionIndexedNormalTexture> verticesRight, out List<int> indicesRight,
-                out List<VertexPositionIndexedNormalTexture> verticesAbove, out List<int> indicesAbove,
-                out List<VertexPositionIndexedNormalTexture> verticesBelow, out List<int> indicesBelow,
-                out List<VertexPositionIndexedNormalTexture> verticesInfront, out List<int> indicesInfront,
-                out List<VertexPositionIndexedNormalTexture> verticesBehind, out List<int> indicesBehind);
-
-            // DISPOSE BUFFERS?
-            // TODO
-            if (this.IndicesCount == 0 || this.VerticesCount == 0)
-                this.ContainVisibleBlocks = false;
-            else
-            {
-                this.ContainVisibleBlocks = true;
-
-                if (verticesLeft.Count != 0)
-                {
-                    this.VBufferLeft = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesLeft.Count, BufferUsage.WriteOnly);
-                    this.IBufferLeft = new IndexBuffer(this.Device, typeof(int), indicesLeft.Count, BufferUsage.WriteOnly);
-                    this.VBufferLeft.SetData(verticesLeft.ToArray());
-                    this.IBufferLeft.SetData<int>(indicesLeft.ToArray());
-                }
-                if (verticesRight.Count != 0)
-                {
-                    this.VBufferRight = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesRight.Count, BufferUsage.WriteOnly);
-                    this.IBufferRight = new IndexBuffer(this.Device, typeof(int), indicesRight.Count, BufferUsage.WriteOnly);
-                    this.VBufferRight.SetData(verticesRight.ToArray());
-                    this.IBufferRight.SetData<int>(indicesRight.ToArray());
-                }
-                if (verticesAbove.Count != 0)
-                {
-                    this.VBufferAbove = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesAbove.Count, BufferUsage.WriteOnly);
-                    this.IBufferAbove = new IndexBuffer(this.Device, typeof(int), indicesAbove.Count, BufferUsage.WriteOnly);
-                    this.VBufferAbove.SetData(verticesAbove.ToArray());
-                    this.IBufferAbove.SetData<int>(indicesAbove.ToArray());
-                }
-                if (verticesBelow.Count != 0)
-                {
-                    this.VBufferBelow = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesBelow.Count, BufferUsage.WriteOnly);
-                    this.IBufferBelow = new IndexBuffer(this.Device, typeof(int), indicesBelow.Count, BufferUsage.WriteOnly);
-                    this.VBufferBelow.SetData(verticesBelow.ToArray());
-                    this.IBufferBelow.SetData<int>(indicesBelow.ToArray());
-                }
-                if (verticesInfront.Count != 0)
-                {
-                    this.VBufferInfront = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesInfront.Count, BufferUsage.WriteOnly);
-                    this.IBufferInfront = new IndexBuffer(this.Device, typeof(int), indicesInfront.Count, BufferUsage.WriteOnly);
-                    this.VBufferInfront.SetData(verticesInfront.ToArray());
-                    this.IBufferInfront.SetData<int>(indicesInfront.ToArray());
-                }
-                if (verticesBehind.Count != 0)
-                {
-                    this.VBufferBehind = new VertexBuffer(
-                        this.Device, VertexPositionIndexedNormalTexture.VertexDeclaration, verticesBehind.Count, BufferUsage.WriteOnly);
-                    this.IBufferBehind = new IndexBuffer(this.Device, typeof(int), indicesBehind.Count, BufferUsage.WriteOnly);
-                    this.VBufferBehind.SetData(verticesBehind.ToArray());
-                    this.IBufferBehind.SetData<int>(indicesBehind.ToArray());
-                }
-            }
-            BufferSet = true;
-        }
-
-        public void DeleteBuffer()
-        {
-            DisposeBuffers();
-
-            this.VBufferLeft = null;
-            this.IBufferLeft = null;
-            this.VBufferRight = null;
-            this.IBufferRight = null;
-            this.VBufferAbove = null;
-            this.IBufferAbove = null;
-            this.VBufferBelow = null;
-            this.IBufferBelow = null;
-            this.VBufferInfront = null;
-            this.IBufferInfront = null;
-            this.VBufferBehind = null;
-            this.IBufferBehind = null;
-
-            this.BufferSet = false;
-        }
-
-        private void SetVerticesIndices(
-            out List<VertexPositionIndexedNormalTexture> verticesLeft, out List<int> indicesLeft,
-            out List<VertexPositionIndexedNormalTexture> verticesRight, out List<int> indicesRight,
-            out List<VertexPositionIndexedNormalTexture> verticesAbove, out List<int> indicesAbove,
-            out List<VertexPositionIndexedNormalTexture> verticesBelow, out List<int> indicesBelow,
-            out List<VertexPositionIndexedNormalTexture> verticesInfront, out List<int> indicesInfront,
-            out List<VertexPositionIndexedNormalTexture> verticesBehind, out List<int> indicesBehind)
-        {
-            verticesLeft = new List<VertexPositionIndexedNormalTexture>();
-            indicesLeft = new List<int>();
-            verticesRight = new List<VertexPositionIndexedNormalTexture>();
-            indicesRight = new List<int>();
-            verticesAbove = new List<VertexPositionIndexedNormalTexture>();
-            indicesAbove = new List<int>();
-            verticesBelow = new List<VertexPositionIndexedNormalTexture>();
-            indicesBelow = new List<int>();
-            verticesInfront = new List<VertexPositionIndexedNormalTexture>();
-            indicesInfront = new List<int>();
-            verticesBehind = new List<VertexPositionIndexedNormalTexture>();
-            indicesBehind = new List<int>();
+            var builderLeft = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
+            var builderRight = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
+            var builderTop = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
+            var builderBottom = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
+            var builderFront = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
+            var builderBack = new VisualBufferBuilder<VertexPositionIndexedNormalTexture>();
 
             for (int x = 0; x < this.AllBlocks.Size.X; x++)
                 for (int y = 0; y < this.AllBlocks.Size.Y; y++)
                     for (int z = 0; z < this.AllBlocks.Size.Z; z++)
                     {
-                        Block cur = AllBlocks[x, y, z];
-                        if (cur.NotHidden && cur.Visible)
+                        Block current = AllBlocks[x, y, z];
+                        Vector3 blockMinCorner = new Vector3(x, y, z) * Block.Sidelength;
+
+                        if (current.NotHidden && current.Visible)
                         {
                             if (!HoldsVisibleBlock(x - 1, y, z))//left
                             {
-                                indicesLeft.AddRange(cur.Indices(verticesLeft.Count));
-                                verticesLeft.AddRange(cur.VerticesXNegative(new Vector3(x, y, z) * Block.Sidelength));
+                                builderLeft.AddBuffer(current.VerticesXNegative(blockMinCorner), current.Indices());
                             }
                             if (!HoldsVisibleBlock(x + 1, y, z))//right
                             {
-                                indicesRight.AddRange(cur.Indices(verticesRight.Count));
-                                verticesRight.AddRange(cur.VerticesXPositive(new Vector3(x, y, z) * Block.Sidelength));
+                                builderRight.AddBuffer(current.VerticesXPositive(blockMinCorner), current.Indices());
                             }
                             if (!HoldsVisibleBlock(x, y - 1, z))//below
                             {
-                                indicesBelow.AddRange(cur.Indices(verticesBelow.Count));
-                                verticesBelow.AddRange(cur.VerticesYNegative(new Vector3(x, y, z) * Block.Sidelength));
+                                builderBottom.AddBuffer(current.VerticesYNegative(blockMinCorner), current.Indices());
                             }
                             if (!HoldsVisibleBlock(x, y + 1, z))//above
                             {
-                                indicesAbove.AddRange(cur.Indices(verticesAbove.Count));
-                                verticesAbove.AddRange(cur.VerticesYPositive(new Vector3(x, y, z) * Block.Sidelength));
+                                builderTop.AddBuffer(current.VerticesYPositive(blockMinCorner), current.Indices());
                             }
                             if (!HoldsVisibleBlock(x, y, z - 1))//infront
                             {
-                                indicesInfront.AddRange(cur.Indices(verticesInfront.Count));
-                                verticesInfront.AddRange(cur.VerticesZNegative(new Vector3(x, y, z) * Block.Sidelength));
+                                builderFront.AddBuffer(current.VerticesZNegative(blockMinCorner), current.Indices());
                             }
                             if (!HoldsVisibleBlock(x, y, z + 1))//behind
                             {
-                                indicesBehind.AddRange(cur.Indices(verticesBehind.Count));
-                                verticesBehind.AddRange(cur.VerticesZPositive(new Vector3(x, y, z) * Block.Sidelength));
+                                builderBack.AddBuffer(current.VerticesZPositive(blockMinCorner), current.Indices());
                             }
                         }
                     }
-            this.VerticesCountLeft = verticesLeft.Count;
-            this.VerticesCountRight = verticesRight.Count;
-            this.VerticesCountAbove = verticesAbove.Count;
-            this.VerticesCountBelow = verticesBelow.Count;
-            this.VerticesCountInfront = verticesInfront.Count;
-            this.VerticesCountBehind = verticesBehind.Count;
+            this.VerticesCount = builderLeft.VertexCount + builderRight.VertexCount +
+                builderTop.VertexCount + builderBottom.VertexCount +
+                builderFront.VertexCount + builderBack.VertexCount;
+            this.IndicesCount = builderLeft.IndexCount + builderRight.IndexCount +
+                builderTop.IndexCount + builderBottom.IndexCount +
+                builderFront.IndexCount + builderBack.IndexCount;
 
-            this.IndicesCountLeft = indicesLeft.Count;
-            this.IndicesCountRight = indicesRight.Count;
-            this.IndicesCountAbove = indicesAbove.Count;
-            this.IndicesCountBelow = indicesBelow.Count;
-            this.IndicesCountInfront = indicesInfront.Count;
-            this.IndicesCountBehind = indicesBehind.Count;
+            //Function that gets a delegate to select the builder and one to store the created buffer and then creates a buffer from the builder
+            Action<Func<VisualBufferBuilder<VertexPositionIndexedNormalTexture>>, Action<VisualBuffer<VertexPositionIndexedNormalTexture>>> createBuffer =
+                (Func<VisualBufferBuilder<VertexPositionIndexedNormalTexture>> selectBuilder, Action<VisualBuffer<VertexPositionIndexedNormalTexture>> setBuffer) =>
+            {
+                setBuffer(selectBuilder().CreateBuffer(Device, VertexPositionIndexedNormalTexture.VertexDeclaration, BufferUsage.WriteOnly));
+            };
 
-            this.VerticesCount = verticesLeft.Count + verticesRight.Count +
-                verticesAbove.Count + verticesBelow.Count +
-                verticesInfront.Count + verticesBehind.Count;
-            this.IndicesCount = indicesLeft.Count + indicesRight.Count +
-                indicesAbove.Count + indicesBelow.Count +
-                indicesInfront.Count + indicesBehind.Count;
+            createBuffer(() => builderLeft, vb => BufferLeft = vb);
+            createBuffer(() => builderRight, vb => BufferRight = vb);
+            createBuffer(() => builderTop, vb => BufferTop = vb);
+            createBuffer(() => builderBottom, vb => BufferBottom = vb);
+            createBuffer(() => builderFront, vb => BufferFront = vb);
+            createBuffer(() => builderBack, vb => BufferBack = vb);
+
+            BufferSet = true;
         }
+
+        public void DeleteBuffer()
+        {
+            Dispose();
+
+            this.BufferLeft = null;
+            this.BufferRight = null;
+            this.BufferTop = null;
+            this.BufferBottom = null;
+            this.BufferFront = null;
+            this.BufferBack = null;
+
+            this.BufferSet = false;
+        }
+
         #endregion
 
         /// <summary>
@@ -965,74 +834,44 @@ namespace _1st3DGame
 
             int drawnVertices = 0;
 
-            if (ContainVisibleBlocks)
+            if (drawLeft)
+                drawnVertices += DrawBuffer(BufferLeft, effect);
+            if (drawRight)
+                drawnVertices += DrawBuffer(BufferRight, effect);
+
+            if (drawAbove)
+                drawnVertices += DrawBuffer(BufferTop, effect);
+
+            if (drawBelow)
+                drawnVertices += DrawBuffer(BufferBottom, effect);
+
+            if (drawInfront)
+                drawnVertices += DrawBuffer(BufferFront, effect);
+
+            if (drawBehind)
+                drawnVertices += DrawBuffer(BufferBack, effect);
+
+
+            return drawnVertices;
+        }
+
+        private int DrawBuffer(VisualBuffer<VertexPositionIndexedNormalTexture> buffer, Effect effect)
+        {
+            int drawnVertices = 0;
+
+            if (buffer != null)
             {
-                if (drawLeft)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
+                foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
 
-                        this.Device.Indices = this.IBufferLeft;
-                        this.Device.SetVertexBuffer(this.VBufferLeft);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountLeft / 3);
+                    buffer.SetForDevice(Device);
+                    this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, buffer.Indices.IndexCount / 3);
 
-                        drawnVertices += this.VerticesCountLeft;
-                    }
-                if (drawRight)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        this.Device.Indices = this.IBufferRight;
-                        this.Device.SetVertexBuffer(this.VBufferRight);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountRight / 3);
-
-                        drawnVertices += this.VerticesCountRight;
-                    }
-                if (drawAbove)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        this.Device.Indices = this.IBufferAbove;
-                        this.Device.SetVertexBuffer(this.VBufferAbove);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountAbove / 3);
-
-                        drawnVertices += this.VerticesCountAbove;
-                    }
-                if (drawBelow)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        this.Device.Indices = this.IBufferBelow;
-                        this.Device.SetVertexBuffer(this.VBufferBelow);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountBelow / 3);
-
-                        drawnVertices += this.VerticesCountBelow;
-                    }
-                if (drawInfront)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        this.Device.Indices = this.IBufferInfront;
-                        this.Device.SetVertexBuffer(this.VBufferInfront);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountInfront / 3);
-
-                        drawnVertices += this.VerticesCountInfront;
-                    }
-                if (drawBehind)
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-
-                        this.Device.Indices = this.IBufferBehind;
-                        this.Device.SetVertexBuffer(this.VBufferBehind);
-                        this.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.IndicesCountBehind / 3);
-                        drawnVertices += this.VerticesCountBehind;
-                    }
+                    drawnVertices += buffer.Vertices.VertexCount;
+                }
             }
+
             return drawnVertices;
         }
 
@@ -1044,65 +883,51 @@ namespace _1st3DGame
 
             if (posDif.X < 0)
             {
-                if (this.VerticesCountRight > 0) drawRight = true;
-                else drawRight = false;
+                drawRight = true;
                 drawLeft = false;
             }
             else if (posDif.X == 0)
             {
-                if (this.VerticesCountLeft > 0) drawLeft = true;
-                else drawLeft = false;
-                if (this.VerticesCountRight > 0) drawRight = true;
-                else drawRight = false;
+                drawLeft = true;
+                drawRight = true;
             }
             else
             {
-                if (this.VerticesCountLeft > 0) drawLeft = true;
-                else drawLeft = false;
+                drawLeft = true;
                 drawRight = false;
             }
 
             if (posDif.Y < 0)
             {
-                if (this.VerticesCountAbove > 0) drawAbove = true;
-                else drawAbove = false;
+                drawAbove = true;
                 drawBelow = false;
             }
             else if (posDif.Y == 0)
             {
-                if (this.VerticesCountBelow > 0) drawBelow = true;
-                else drawBelow = false;
-                if (this.VerticesCountAbove > 0) drawAbove = true;
-                else drawAbove = false;
+                drawBelow = true;
+                drawAbove = true;
             }
             else
             {
-                if (this.VerticesCountBelow > 0) drawBelow = true;
-                else drawBelow = false;
+                drawBelow = true;
                 drawAbove = false;
-
             }
 
             if (posDif.Z < 0)
             {
-                if (this.VerticesCountBehind > 0) drawBehind = true;
-                else drawBehind = false;
+                drawBehind = true;
                 drawInfront = false;
             }
             else if (posDif.Z == 0)
             {
-                if (this.VerticesCountBehind > 0) drawBehind = true;
-                else drawBehind = false;
-                if (this.VerticesCountInfront > 0) drawInfront = true;
-                else drawInfront = false;
+                drawBehind = true;
+                drawInfront = true;
             }
             else
             {
                 drawBehind = false;
-                if (this.VerticesCountInfront > 0) drawInfront = true;
-                else drawInfront = false;
+                drawInfront = true;
             }
-
         }
 
         public override string ToString()
