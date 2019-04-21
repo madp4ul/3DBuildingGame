@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace _1st3DGame.Hud_Elements
+namespace BlockGame3D.Hud_Elements
 {
     class ItemBar
     {

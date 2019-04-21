@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using _1st3DGame.Input;
-using _1st3DGame.Menus;
-using _1st3DGame.Menus.InventoryStates;
-using _1st3DGame.Menus.GraphicsMenuOptions;
+using BlockGame3D.Input;
+using BlockGame3D.Menus;
+using BlockGame3D.Menus.InventoryStates;
+using BlockGame3D.Menus.GraphicsMenuOptions;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class DataContainer
     {

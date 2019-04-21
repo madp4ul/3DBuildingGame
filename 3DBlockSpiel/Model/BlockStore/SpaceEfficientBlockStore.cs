@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlockGameClasses;
 
-namespace _1st3DGame.Model.BlockStore
+namespace BlockGame3D.Model.BlockStore
 {
     class SpaceEfficientBlockStore : IBlockStore
     {

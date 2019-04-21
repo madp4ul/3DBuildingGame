@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class MovebleCamera
     {

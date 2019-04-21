@@ -1,6 +1,6 @@
 ﻿using BlockGameClasses;
 
-namespace _1st3DGame.Model.BlockStore
+namespace BlockGame3D.Model.BlockStore
 {
     interface IBlockStore
     {

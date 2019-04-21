@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class Block : ICloneable
     {
@@ -135,7 +135,7 @@ namespace _1st3DGame
         }
 
         #endregion
-        public int[] Indices(int offSet)
+        public int[] Indices(int offSet = 0)
         {
             return new int[]
             {

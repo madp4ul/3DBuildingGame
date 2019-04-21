@@ -5,7 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class Sun
     {

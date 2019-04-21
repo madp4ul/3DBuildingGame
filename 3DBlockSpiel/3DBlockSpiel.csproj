@@ -9,7 +9,7 @@
     <ProjectGuid>{F727F000-98EB-4051-BEDE-16B335A33078}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_1st3DGame</RootNamespace>
+    <RootNamespace>BlockGame3D</RootNamespace>
     <AssemblyName>3DBlockSpiel</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
@@ -77,6 +77,8 @@
     <Compile Include="Model\RandomGeneration\ARandomGeneration.cs" />
     <Compile Include="Model\RandomGeneration\IRandomGenerierung.cs" />
     <Compile Include="Model\RandomGeneration\PerlinNoise.cs" />
+    <Compile Include="Model\VisualBuffer\VisualBuffer.cs" />
+    <Compile Include="Model\VisualBuffer\VisualBufferBuilder.cs" />
     <Compile Include="MovebleCamera.cs" />
     <Compile Include="MoveDirection.cs" />
     <Compile Include="Player.cs" />

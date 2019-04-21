@@ -9,10 +9,10 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Threading.Tasks;
 using System.Threading;
-using _1st3DGame.Menus.GraphicsMenuOptions;
+using BlockGame3D.Menus.GraphicsMenuOptions;
 using BlockGameClasses;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class World
     {

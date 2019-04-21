@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace _1st3DGame.Menus
+namespace BlockGame3D.Menus
 {
     class PauseMenu : Menu
     {

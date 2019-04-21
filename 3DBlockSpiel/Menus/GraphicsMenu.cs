@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using _1st3DGame.Menus.GraphicsMenuOptions;
+using BlockGame3D.Menus.GraphicsMenuOptions;
 
-namespace _1st3DGame.Menus
+namespace BlockGame3D.Menus
 {
     class GraphicsMenu : Menu
     {

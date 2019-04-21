@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     struct VertexPositionIndexedNormalTexture
     {

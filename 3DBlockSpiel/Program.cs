@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
 #if WINDOWS || LINUX
     /// <summary>

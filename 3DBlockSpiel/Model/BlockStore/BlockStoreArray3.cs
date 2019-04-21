@@ -1,5 +1,5 @@
-﻿using _1st3DGame;
-using _1st3DGame.Model.BlockStore;
+﻿using BlockGame3D;
+using BlockGame3D.Model.BlockStore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

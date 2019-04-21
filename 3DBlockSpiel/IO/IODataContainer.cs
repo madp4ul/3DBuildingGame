@@ -1,8 +1,8 @@
-﻿using _1st3DGame.Menus.GraphicsMenuOptions;
-using _1st3DGame.Input;
+﻿using BlockGame3D.Menus.GraphicsMenuOptions;
+using BlockGame3D.Input;
 using Newtonsoft.Json;
 
-namespace _1st3DGame.IO
+namespace BlockGame3D.IO
 {
     public class IODataContainer
     {

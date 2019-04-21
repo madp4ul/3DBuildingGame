@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using BlockGameClasses;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     static class Math2
     {

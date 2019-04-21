@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using _1st3DGame.Menus;
+using BlockGame3D.Menus;
 
-namespace _1st3DGame.Input
+namespace BlockGame3D.Input
 {
     static class InputProcessor
     {

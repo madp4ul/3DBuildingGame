@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-using _1st3DGame.Hud_Elements;
+using BlockGame3D.Hud_Elements;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class StaticHUD
     {

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using BlockGameClasses.RandomGeneration;
 using BlockGameClasses;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     class RandomGeneration : ARandomGeneration<Block>
     {

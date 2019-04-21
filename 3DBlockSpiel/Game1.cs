@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using _1st3DGame.Input;
-using _1st3DGame.IO;
-using _1st3DGame.Menus.GraphicsMenuOptions;
+using BlockGame3D.Input;
+using BlockGame3D.IO;
+using BlockGame3D.Menus.GraphicsMenuOptions;
 
-namespace _1st3DGame
+namespace BlockGame3D
 {
     /// <summary>
     /// This is the main type for your game

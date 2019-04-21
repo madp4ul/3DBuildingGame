@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 
-namespace _1st3DGame.Input
+namespace BlockGame3D.Input
 {
     public class Keybindings
     {
