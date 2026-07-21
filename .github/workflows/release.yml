@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.0.0)'
+        required: true
+
+jobs:
+  build-and-release:
+    runs-on: windows-2019
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install MonoGame 3.6 (v3.0 MSBuild compatibility)
+        shell: powershell
+        run: |
+          $installer = "$env:TEMP\MonoGameSetup.exe"
+          # MonoGame 3.6 is the last installer-based release compatible with the v3.0 MSBuild paths
+          # It installs to %MSBuildExtensionsPath%\MonoGame\v3.0\ and %MonoGameInstallDirectory%\MonoGame\v3.0\
+          Invoke-WebRequest -Uri "https://github.com/MonoGame/MonoGame/releases/download/v3.6/MonoGameSetup.exe" `
+            -OutFile $installer -UseBasicParsing
+          Start-Process -FilePath $installer -ArgumentList "/S" -Wait
+          Write-Host "MonoGame installation complete"
+          # Verify expected MSBuild targets exist
+          $targetsPath = "$env:MSBuildExtensionsPath\MonoGame\v3.0\MonoGame.Content.Builder.targets"
+          if (Test-Path $targetsPath) {
+            Write-Host "MonoGame MSBuild targets found at: $targetsPath"
+          } else {
+            Write-Warning "MonoGame MSBuild targets not found at expected path, checking alternatives..."
+            Get-ChildItem "C:\Program Files (x86)\MSBuild\MonoGame" -Recurse -ErrorAction SilentlyContinue
+            Get-ChildItem "C:\Program Files\MSBuild\MonoGame" -Recurse -ErrorAction SilentlyContinue
+          }
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore 3DBlockSpiel.sln
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Release
+        run: |
+          msbuild 3DBlockSpiel.sln `
+            /p:Configuration=Release `
+            /p:Platform=x86 `
+            /m `
+            /verbosity:normal
+
+      - name: Package release artifacts
+        shell: powershell
+        run: |
+          $outDir = "3DBlockSpiel\bin\Windows\x86\Release"
+          if (-not (Test-Path $outDir)) {
+            # Fallback: search for the output folder
+            $outDir = Get-ChildItem -Path "3DBlockSpiel\bin" -Recurse -Filter "Release" -Directory |
+              Select-Object -First 1 -ExpandProperty FullName
+            Write-Host "Using output directory: $outDir"
+          }
+          $zipName = "3DBuildingGame-${{ github.ref_name }}-Windows-x86.zip"
+          Compress-Archive -Path "$outDir\*" -DestinationPath $zipName -Force
+          Write-Host "Created release package: $zipName"
+          echo "ZIP_NAME=$zipName" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Determine release tag
+        id: tag
+        shell: powershell
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            echo "RELEASE_TAG=${{ github.event.inputs.tag }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          } else {
+            echo "RELEASE_TAG=${{ github.ref_name }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: Release ${{ env.RELEASE_TAG }}
+          draft: false
+          prerelease: false
+          files: ${{ env.ZIP_NAME }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
